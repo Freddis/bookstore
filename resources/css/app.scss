@@ -1,0 +1,9 @@
+@import "~bootstrap/scss/bootstrap.scss";
+
+body {
+  font-family: Arial;
+}
+
+.navbar-light .navbar-nav .nav-link.router-link-exact-active {
+  color: black;
+}
