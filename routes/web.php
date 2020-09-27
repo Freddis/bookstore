@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\CatalogueController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('catalogue/upload', [CatalogueController::class,'upload']);
+
+Route::post('catalogue/checkJob', [CatalogueController::class,'checkUploadStatus']);
 
 Route::any('{slug}', function () {
     return view('welcome');
