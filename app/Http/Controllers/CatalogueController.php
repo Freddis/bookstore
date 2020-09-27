@@ -10,21 +10,13 @@ use Illuminate\Support\Facades\Storage;
 
 class CatalogueController extends Controller
 {
-
     function upload(Request $req)
     {
-        if (!$req->hasFile("xml")) {
-            return $this->error("No file");
-        }
-
-        if (strpos($req->file("xml")->getClientOriginalName(), ".xml") === false) {
-            return $this->error("It should be xml file");
-        }
+        // read contents from the input stream
+        $inputHandler = fopen('php://input', "r");
 
         $filename = uniqid() . ".xml";
-        //not a good for streams
-//        $result = $req->file("xml")->storeAs("files", $filename);
-        $result = Storage::disk('local')->put("files/" . $filename, $req->file("xml")->get());
+        $result = Storage::disk('local')->writeStream("files/" . $filename, $inputHandler);
 
         if (!$result) {
             return $this->error("Couldn't move the file");
