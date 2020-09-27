@@ -12,7 +12,6 @@ class CatalogueController extends Controller
 {
     function upload(Request $req)
     {
-        // read contents from the input stream
         $inputHandler = fopen('php://input', "r");
 
         $filename = uniqid() . ".xml";
