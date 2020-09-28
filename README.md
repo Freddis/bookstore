@@ -49,4 +49,4 @@ develop as safely as possible.
 I know it was not a part of the task, but I also implemented **job tacking**. When you upload the xml file you can see how 
 many products already have been added and you will see when job is done or if it has failed.
 
-For images I decided to first crop them and then resize otherwise the **aspect ratio** will be wrong.
+For images I decided to first resize them first and then resize otherwise the **aspect ratio** will be wrong.

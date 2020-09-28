@@ -93,12 +93,11 @@ class ImportService
         $attrs = $xml->attributes();
         $id = $attrs["isbn"] . "";
         $title = $attrs["title"] . "";
-        $description = isset($xml->description ) ? $xml->description . "" : "";
+        $description = isset($xml->description) ? $xml->description . "" : "";
         $image = isset($xml->image) ? $xml->image . "" : null;
 
-        $existing = Book::where("isbn",$id)->first();
-        if($existing)
-        {
+        $existing = Book::where("isbn", $id)->first();
+        if ($existing) {
             return;
         }
 
@@ -107,7 +106,7 @@ class ImportService
         $book->title = $title;
         $book->description = $description;
         $book->isbn = $id;
-        if($image) {
+        if ($image) {
             $localImage = $this->loadImage($image);
             $book->image = $localImage;
         }
@@ -118,7 +117,7 @@ class ImportService
 
     private function loadImage(string $image)
     {
-        $path = "storage/".date("Y") . "/" . date("m") . "/" . date("d");
+        $path = "storage/" . date("Y") . "/" . date("m") . "/" . date("d");
         $dirpath = public_path() . "/" . $path;
         File::ensureDirectoryExists($dirpath);
         $content = file_get_contents($image);
@@ -128,21 +127,35 @@ class ImportService
 
         $desiredWidth = 400;
         $desiredHeight = 200;
-        if($image->height() > $image->width())
+
+        if( $image->width() < $desiredWidth)
         {
-            $widthThatFitsAspect = $image->width();
-            $heightThatFitsAspect = intval($image->getWidth()*$desiredWidth/$desiredHeight);
+            $image = $image->widen($desiredWidth);
+        }
+        if( $image->height() < $desiredHeight)
+        {
+            $image = $image->widen($desiredHeight);
+        }
+
+        $initialWidth = $image->width();
+        $initialHeight = $image->height();
+
+
+        if($initialWidth/$initialHeight < $desiredWidth/$desiredHeight)
+        {
+            $image = $image->resize($desiredWidth, $initialHeight, function ($constraint) {
+                $constraint->aspectRatio();
+            });
         }
         else {
-            $widthThatFitsAspect = intval($image->getWidth()*$desiredHeight/$desiredWidth);
-            $heightThatFitsAspect = $image->height();
+            $image = $image->resize($initialWidth, $desiredHeight, function ($constraint) {
+                $constraint->aspectRatio();
+            });
         }
-//        $image->save($filePath);
-        $image = $image->crop($widthThatFitsAspect,$heightThatFitsAspect);
-        $image = $image->resize($desiredWidth, $desiredHeight);
+        $image = $image->crop($desiredWidth, $desiredHeight);
         $image->save($filePath);
 
-        $uri = $path."/".$newName;
+        $uri = $path . "/" . $newName;
         return $uri;
     }
 }
