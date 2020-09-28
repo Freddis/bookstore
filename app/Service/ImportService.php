@@ -23,11 +23,10 @@ class ImportService
             throw new \Exception("Can't access the file");
         }
 
-
         Book::getQuery()->delete();
         $i = 0;
         $last = 0;
-        $threshold = 0;
+        $threshold = 100;
         while ($book = $this->getElement($handle, "book")) {
 //           dump($book);
             $this->processBook($book);

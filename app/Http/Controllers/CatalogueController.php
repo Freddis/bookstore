@@ -13,12 +13,13 @@ class CatalogueController extends Controller
 {
     function products()
     {
+
         return view('welcome');
     }
 
     function getProducts()
     {
-        $perPage = 6;
+        $perPage = 100;
         $books = Book::paginate($perPage);
         return $books;
     }
@@ -51,7 +52,8 @@ class CatalogueController extends Controller
         $job = CatalogueParseJob::where("jobId",$id)->first();
         if(!$job)
         {
-            return ["status"=>true,"data" => ["jobStatus" => "pending"]];
+            $count = Book::count();
+            return ["status"=>true,"data" => ["jobStatus" => "pending","productsCount" => $count]];
         }
 
         if($job->status)
