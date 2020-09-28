@@ -2,8 +2,29 @@
 
 body {
   font-family: Arial;
+  #app > .container{
+    margin-top: 40px;
+  }
 }
 
 .navbar-light .navbar-nav .nav-link.router-link-exact-active {
   color: black;
+}
+
+
+.page-catalogue {
+  .card {
+    height: 500px;
+  }
+  .card-title {
+    text-overflow: ellipsis;
+    height: 30px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  img {
+    height: 200px;
+    background: silver;
+    object-fit: cover;
+  }
 }

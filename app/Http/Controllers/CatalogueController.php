@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ParseCatalogueXmlJob;
+use App\Models\Book;
 use App\Models\CatalogueParseJob;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\Job;
@@ -10,7 +11,19 @@ use Illuminate\Support\Facades\Storage;
 
 class CatalogueController extends Controller
 {
-    function upload(Request $req)
+    function products()
+    {
+        return view('welcome');
+    }
+
+    function getProducts()
+    {
+        $perPage = 6;
+        $books = Book::paginate($perPage);
+        return $books;
+    }
+
+    function upload()
     {
         $inputHandler = fopen('php://input', "r");
 

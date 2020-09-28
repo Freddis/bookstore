@@ -1,10 +1,10 @@
 <template>
-    <div>
+    <div class="page-upload">
         <h1>Upload catalogue file</h1>
         <div :class="getAlertClass()" v-if="status != null">{{statusMessage}}</div>
         <job-checker v-on:complete="onJobComplete($event)" v-if="jobId" :jobId="jobId" :csrf="csrf"></job-checker>
         <input :disabled="blocked" v-on:change="handleFileUpload($event)" name='xml' ref="file" type="file"/>
-        <button :disabled="blocked" v-on:click="uploadCatalogue()">Upload</button>
+        <button class="btn btn-primary" :disabled="blocked" v-on:click="uploadCatalogue()">Upload</button>
         <span v-if="blocked">{{percentage}}%</span>
     </div>
 </template>
@@ -147,7 +147,3 @@
         }
     }
 </script>
-
-<style scoped>
-
-</style>
